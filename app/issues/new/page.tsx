@@ -12,6 +12,8 @@ import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { createIssueSchema } from "@/app/validationSchema";
 import { z } from "zod";
+import ErrorMessage from "@/app/components/ErrorMessage";
+import Spinner from "@/app/components/Spinner";
 
 type IssueForm = z.infer<typeof createIssueSchema>;
 
@@ -27,6 +29,7 @@ const NewIssuePage = () => {
   });
   const router = useRouter();
   const [error, setError] = useState("");
+  const [isSubmitting, setSubmitting] = useState(false);
 
   return (
     <div className="max-w-xl mx-auto space-y-3">
@@ -43,9 +46,12 @@ const NewIssuePage = () => {
         className="space-y-3"
         onSubmit={handleSubmit(async (data) => {
           try {
+            setSubmitting(true);
             await axios.post("/api/issues", data);
             router.push("/issues");
+            setSubmitting(false);
           } catch (error) {
+            setSubmitting(false);
             setError("An unexpected error occured");
           }
         })}
@@ -54,11 +60,7 @@ const NewIssuePage = () => {
           placeholder="Issue title"
           {...register("title")}
         ></TextField.Root>
-        {errors.title && (
-          <Text color="red" as="p">
-            {errors.title.message}
-          </Text>
-        )}
+        <ErrorMessage>{errors.title?.message}</ErrorMessage>
         <Controller
           name="description"
           control={control}
@@ -66,13 +68,12 @@ const NewIssuePage = () => {
             <SimpleMDE {...field} placeholder="Type your description here..." />
           )}
         />
-        {errors.description && (
-          <Text color="red" as="p">
-            {errors.description.message}
-          </Text>
-        )}
+        <ErrorMessage>{errors.description?.message}</ErrorMessage>
         <Flex className="flex gap-1.5">
-          <Button type="submit">Submit issue</Button>
+          <Button type="submit" disabled={isSubmitting}>
+            {isSubmitting ? "Submitting issue..." : "Submit issue"}{" "}
+            {isSubmitting && <Spinner />}
+          </Button>
           <Button type="button" variant="soft" onClick={() => reset()}>
             Reset
           </Button>
