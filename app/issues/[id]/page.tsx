@@ -1,9 +1,9 @@
 import IssueStatusBadge from "@/app/components/IssueStatusBadge";
 import prisma from "@/prisma/client";
-import { Card, Flex, Heading, Separator, Text } from "@radix-ui/themes";
+import { Card, Flex, Heading, Text } from "@radix-ui/themes";
 import { notFound } from "next/navigation";
-import { parse } from "path";
 import React from "react";
+import ReactMarkdown from "react-markdown";
 
 interface Props {
   params: { id: string };
@@ -20,13 +20,19 @@ const IssueDetailPage = async ({ params }: Props) => {
   if (!issue) notFound();
 
   return (
-    <Card>
-      <Heading>{issue.title}</Heading>
-      <Flex gap="2" className="mb-3 items-center">
+    <Card
+      variant="classic"
+      className="max-w-2xl mx-auto"
+      style={{ padding: "24px" }}
+    >
+      <Heading style={{ marginBottom: "4px" }}>{issue.title}</Heading>
+      <Flex gap="2" className="mb-3" style={{ alignItems: "baseline" }}>
         <IssueStatusBadge status={issue.status} />
         <Text size={"1"}>{issue.createdAt.toDateString()}</Text>
       </Flex>
-      <p>{issue.description}</p>
+      <Card className="prose">
+        <ReactMarkdown>{issue.description}</ReactMarkdown>
+      </Card>
     </Card>
   );
 };
