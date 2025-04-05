@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import { TextField, Button, Flex, Callout, Text } from "@radix-ui/themes";
 import { IoMdInformationCircleOutline } from "react-icons/io";
 
-import SimpleMDE from "react-simplemde-editor";
+import dynamic from "next/dynamic";
 import "easymde/dist/easymde.min.css";
 import { Controller, useForm } from "react-hook-form";
 import axios from "axios";
@@ -14,6 +14,11 @@ import { createIssueSchema } from "@/app/validationSchema";
 import { z } from "zod";
 import ErrorMessage from "@/app/components/ErrorMessage";
 import Spinner from "@/app/components/Spinner";
+
+//Importing SimpleMDE dynamically to avoid SSR issues
+const SimpleMDE = dynamic(() => import("react-simplemde-editor"), {
+  ssr: false,
+});
 
 type IssueForm = z.infer<typeof createIssueSchema>;
 
