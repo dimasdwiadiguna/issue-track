@@ -1,5 +1,5 @@
 import React from "react";
-import { Table } from "@radix-ui/themes";
+import { Table, Link } from "@radix-ui/themes";
 import prisma from "@/prisma/client";
 import { Issue } from "@prisma/client";
 import IssueStatusBadge from "../components/IssueStatusBadge";
@@ -8,7 +8,7 @@ import IssueActions from "./IssueActions";
 
 const IssuesPage = async () => {
   const issues: Issue[] = await prisma.issue.findMany();
-  await delay(2000); // Simulate a delay for loading state
+  await delay(200); // Simulate a delay for loading state
   return (
     <div className="flex-col space-y-3.5">
       <IssueActions />
@@ -28,7 +28,7 @@ const IssuesPage = async () => {
           {issues.map((issue) => (
             <Table.Row key={issue.id}>
               <Table.Cell>
-                {issue.title}
+                <Link href={`/issues/${issue.id}`}>{issue.title}</Link>
                 <div className="md:hidden">
                   <IssueStatusBadge status={issue.status} />
                 </div>
