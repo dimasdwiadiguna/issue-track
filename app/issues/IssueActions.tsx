@@ -1,6 +1,5 @@
 import { Button, Flex, Heading } from "@radix-ui/themes";
 import Link from "next/link";
-import React from "react";
 
 const IssueActions = () => {
   return (
