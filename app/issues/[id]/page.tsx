@@ -1,8 +1,19 @@
 import { IssueStatusBadge } from "@/app/components";
 import prisma from "@/prisma/client";
-import { Card, Flex, Heading, Text } from "@radix-ui/themes";
+import {
+  Box,
+  Button,
+  Card,
+  Flex,
+  Grid,
+  Heading,
+  Separator,
+  Text,
+} from "@radix-ui/themes";
 import { notFound } from "next/navigation";
 import ReactMarkdown from "react-markdown";
+import { BiSolidEditAlt } from "react-icons/bi";
+import Link from "next/link";
 interface Props {
   params: { id: string };
 }
@@ -18,20 +29,26 @@ const IssueDetailPage = async ({ params }: Props) => {
   if (!issue) notFound();
 
   return (
-    <Card
-      variant="classic"
-      className="max-w-2xl mx-auto"
-      style={{ padding: "24px" }}
-    >
-      <Heading style={{ marginBottom: "4px" }}>{issue.title}</Heading>
+    <div className="flex-col space-y-5">
+      <Heading>{issue.title}</Heading>
       <Flex gap="2" className="mb-3" style={{ alignItems: "baseline" }}>
         <IssueStatusBadge status={issue.status} />
         <Text size={"1"}>{issue.createdAt.toDateString()}</Text>
       </Flex>
-      <Card className="prose">
-        <ReactMarkdown>{issue.description}</ReactMarkdown>
-      </Card>
-    </Card>
+      <Grid columns={{ initial: "1", sm: "2" }} gap="5">
+        <Box>
+          <Card className="w-full prose text-sm">
+            <ReactMarkdown>{issue.description}</ReactMarkdown>
+          </Card>
+        </Box>
+        <Box>
+          <Button>
+            <BiSolidEditAlt />
+            <Link href={`/issues/${issue.id}/edit`}>Edit issue</Link>
+          </Button>
+        </Box>
+      </Grid>
+    </div>
   );
 };
 

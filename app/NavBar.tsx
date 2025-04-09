@@ -13,7 +13,7 @@ const NavBar = () => {
   ];
   const currPath = usePathname();
   return (
-    <nav className="flex space-x-6 border-b border-zinc-300 mb-5 px-5 h-14 items-center">
+    <nav className="flex space-x-6 border-b border-zinc-300 px-5 h-14 items-center">
       <Link href="/">
         <FaBug />
       </Link>

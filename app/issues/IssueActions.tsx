@@ -4,7 +4,7 @@ import Link from "next/link";
 const IssueActions = () => {
   return (
     <Flex justify="between">
-      <Heading style={{ marginBottom: "16px" }}>IssuesPage</Heading>
+      <Heading className="mb-5">IssuesPage</Heading>
       <Button>
         <Link href="/issues/new">Add new issue</Link>
       </Button>
