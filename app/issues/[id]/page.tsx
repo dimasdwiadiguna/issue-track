@@ -1,19 +1,9 @@
 import { IssueStatusBadge } from "@/app/components";
 import prisma from "@/prisma/client";
-import {
-  Box,
-  Button,
-  Card,
-  Flex,
-  Grid,
-  Heading,
-  Separator,
-  Text,
-} from "@radix-ui/themes";
+import { Box, Card, Flex, Grid, Heading, Text } from "@radix-ui/themes";
 import { notFound } from "next/navigation";
 import ReactMarkdown from "react-markdown";
-import { BiSolidEditAlt } from "react-icons/bi";
-import Link from "next/link";
+import EditIssueButton from "./EditIssueButton";
 interface Props {
   params: { id: string };
 }
@@ -42,10 +32,7 @@ const IssueDetailPage = async ({ params }: Props) => {
           </Card>
         </Box>
         <Box>
-          <Button>
-            <BiSolidEditAlt />
-            <Link href={`/issues/${issue.id}/edit`}>Edit issue</Link>
-          </Button>
+          <EditIssueButton issueId={issue.id} />
         </Box>
       </Grid>
     </div>
