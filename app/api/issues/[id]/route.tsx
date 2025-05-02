@@ -26,7 +26,16 @@ export const PATCH = async (
   return NextResponse.json(updatedIssue, { status: 201 });
 };
 
-export async function GET({ params }: { params: { id: string } }) {
+export async function GET(
+  request: NextRequest,
+  { params }: { params: { id: string } }
+) {
+  console.log(request.nextUrl.searchParams);
+  const id = (await params).id;
+  if (!id || isNaN(Number(id))) {
+    return NextResponse.json({ error: "Invalid issue ID" }, { status: 400 });
+  }
+
   const issue = await prisma.issue.findUnique({
     where: { id: parseInt(params.id) },
   });
@@ -34,3 +43,18 @@ export async function GET({ params }: { params: { id: string } }) {
 
   return NextResponse.json(issue, { status: 200 });
 }
+
+export const DELETE = async (
+  request: NextRequest,
+  { params }: { params: { id: string } }
+) => {
+  console.log("Server is deleting...");
+  const issue = await prisma.issue.findUnique({
+    where: { id: parseInt(params.id) },
+  });
+  if (!issue) return NextResponse.json("Invalid issue", { status: 404 });
+  const deletedIssue = await prisma.issue.delete({
+    where: { id: parseInt(params.id) },
+  });
+  return NextResponse.json(deletedIssue, { status: 200 });
+};

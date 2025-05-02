@@ -4,10 +4,13 @@ import { BiSolidEditAlt } from "react-icons/bi";
 
 const EditIssueButton = ({ issueId }: { issueId: Number }) => {
   return (
-    <Button>
-      <BiSolidEditAlt />
-      <Link href={`/issues/${issueId}/edit`}>Edit issue</Link>
-    </Button>
+    <Link href={`/issues/${issueId}/edit`} className="w-fit">
+      <Button>
+        {" "}
+        <BiSolidEditAlt />
+        Edit
+      </Button>
+    </Link>
   );
 };
 

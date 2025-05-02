@@ -11,7 +11,7 @@ interface IIssueStatusTab {
 
 const IssueStatusTab = ({ value, onChange }: IIssueStatusTab) => {
   return (
-    <SegmentedControl.Root value={value} onValueChange={onChange}>
+    <SegmentedControl.Root value={value} onValueChange={onChange} radius="full">
       {enumKeys($Enums.Status).map((item) => (
         <SegmentedControl.Item key={item} value={item}>
           {item}

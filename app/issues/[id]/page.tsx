@@ -1,9 +1,19 @@
 import { IssueStatusBadge } from "@/app/components";
 import prisma from "@/prisma/client";
-import { Box, Card, Flex, Grid, Heading, Text } from "@radix-ui/themes";
-import { notFound } from "next/navigation";
+import {
+  Box,
+  Card,
+  Container,
+  Flex,
+  Grid,
+  Heading,
+  Text,
+} from "@radix-ui/themes";
+import { notFound, redirect } from "next/navigation";
 import ReactMarkdown from "react-markdown";
 import EditIssueButton from "./EditIssueButton";
+import DeleteIssueButton from "./DeleteIssueButton";
+import axios from "axios";
 interface Props {
   params: { id: string };
 }
@@ -19,23 +29,24 @@ const IssueDetailPage = async ({ params }: Props) => {
   if (!issue) notFound();
 
   return (
-    <div className="flex-col space-y-5">
+    <Container size="3">
       <Heading>{issue.title}</Heading>
       <Flex gap="2" className="mb-3" style={{ alignItems: "baseline" }}>
         <IssueStatusBadge status={issue.status} />
         <Text size={"1"}>{issue.createdAt.toDateString()}</Text>
       </Flex>
-      <Grid columns={{ initial: "1", sm: "2" }} gap="5">
-        <Box>
-          <Card className="w-full prose text-sm">
+      <Grid columns={{ initial: "1", sm: "5" }} gap="5">
+        <Box className="col-span-4">
+          <Card className="max-w-full prose text-sm">
             <ReactMarkdown>{issue.description}</ReactMarkdown>
           </Card>
         </Box>
-        <Box>
+        <Flex gap="2" className="flex-row md:flex-col">
           <EditIssueButton issueId={issue.id} />
-        </Box>
+          <DeleteIssueButton issueId={issue.id} issueTitle={issue.title} />
+        </Flex>
       </Grid>
-    </div>
+    </Container>
   );
 };
 
